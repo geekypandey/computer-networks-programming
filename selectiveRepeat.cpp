@@ -48,17 +48,15 @@ int main()
     for(int j = 0 ; j <=frame_size; j++){
         dropped_packet[j] = MAX_INPUT;
     }
-    int count;
     while(ack_received != frame_size) {
             //sent those frame  whose acknoledgemnt is not received in order to user in size of window_size or less
-            count = ack_received; 
-            for(i = 1 ; i <= window_size && count!=frame_size; i++ ){
+             
+            for(i = 1 ; i <= window_size && ack_received!=frame_size; i++ ){
                 if(dropped_packet[i] != MAX_INPUT){
                     cout << "Frame sent " << dropped_packet[i] << endl;
-                    count++;
                 }else{
-                    if(last_packet +1 > frame_size)
-                        break;
+                    if(last_packet == frame_size)
+                        continue;
                     cout << "Frame sent " << last_packet + 1<< endl;
                     last_packet ++;
                 }
@@ -76,8 +74,8 @@ int main()
                         dropped_packet[i] = MAX_INPUT;
                     }
                     else{
-                        if(last_packet_copy +1 > frame_size)
-                            break;
+                        if(last_packet_copy == frame_size)
+                            continue;
                         cout << "Acknowledgement from frame " << last_packet_copy + 1  << " Received"<< endl;
                         last_packet_copy++;
                     }
@@ -87,8 +85,8 @@ int main()
                         cout << "Frame " << dropped_packet[i]  << " Dropped" << endl;
                     }
                     else{
-                        if(last_packet_copy + 1 > frame_size)
-                            break;
+                        if(last_packet_copy == frame_size)
+                             continue;
                         cout << "Frame " << last_packet_copy + 1 << " Dropped"  << endl;
                         dropped_packet[insert_here] = last_packet_copy +1;
                         insert_here++;
